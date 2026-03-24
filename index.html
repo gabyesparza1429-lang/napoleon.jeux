@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Napoléon : La Marche du Savoir (Sergio)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;700&display=swap');
+
+        :root {
+            --map-beige: #e5cfa1;
+            --path-green: #2d5a27;
+            --ink-black: #2c2416;
+            --neon-green: #39FF14;
+        }
+
+        body {
+            background-color: var(--map-beige);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Contenedor principal para split-screen */
+        #main-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* --- Panel Lateral Izquierdo (Preguntas) --- */
+        #quiz-panel {
+            flex: 0 0 35%; /* Ocupa el 35% de la pantalla */
+            background: rgba(255, 252, 240, 0.98); /* Fondo claro semitransparente */
+            border-right: 4px double #5d4037;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 100;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        /* --- Panel Lateral Derecho (TU MAPA) --- */
+        #map-panel {
+            flex: 1; /* Ocupa el resto (65%) */
+            position: relative;
+            /* !!! IMPORTANTE: Asegúrate de tener la imagen image_1.png guardada como 'mapa_napoleon.jpg' en la misma carpeta !!! */
+            background-image: url('mapa_napoleon.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 15px solid #5d4037;
+            border-left: none; /* Quitamos el borde izquierdo para la unión */
+        }
+
+        /* El caballero que se mueve PASO A PASO */
+        #knight-icon {
+            position: absolute;
+            font-size: 50px;
+            /* Animación suave para que se vea el avance */
+            transition: all 0.8s ease-out;
+            z-index: 20;
+            transform: translate(-50%, -50%); /* Centrado */
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+        }
+
+        /* --- Estilos Generales --- */
+        .btn-choice {
+            background: rgba(255,255,255,0.7);
+            border: 2px solid #5d4037;
+            padding: 12px;
+            margin: 5px 0;
+            width: 100%;
+            text-align: left;
+            transition: 0.3s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-choice:hover {
+            background: #5d4037;
+            color: white;
+            border-color: #5d4037;
+        }
+
+        .feedback-box {
+            display: none;
+            background: rgba(255, 236, 179, 0.9);
+            border: 2px solid #ffa000;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+
+        .hp-heart { color: #e74c3c; font-size: 1.5rem; }
+        .hidden { display: none; }
+        .font-fantasy { font-family: 'Cinzel', serif; }
+
+    </style>
+</head>
+<body>
+
+<div id="main-container">
+
+    <div id="quiz-panel">
+        
+        <div>
+            <div class="flex justify-between items-center mb-6 border-b-2 border-amber-900 pb-3">
+                <div id="hp-container"></div>
+                <div class="text-right">
+                    <p id="lvl-title" class="font-fantasy text-amber-900 text-sm"></p>
+                    <p id="lvl-count" class="text-xs italic text-gray-600"></p>
+                </div>
+            </div>
+
+            <div id="game-content">
+                <div id="start-screen" class="text-center">
+                    <h1 class="text-3xl font-fantasy font-bold text-center mb-4 text-amber-950">NAPOLÉON : LA MARCHE DU SAVOIR</h1>
+                    <p class="text-gray-700 mb-8 text-justify">Bienvenue, général. Vous allez parcourir l'Europe sur votre carte historique. Pour chaque ville conquise, vous devrez répondre à 5 questions d'histoire. Attention, le chevalier (Napoléon) se déplacera sur votre carte : répondez juste pour le faire avancer vers sa légende.</p>
+                    <button onclick="nextStep()" class="w-full bg-amber-950 text-white py-4 font-bold rounded hover:bg-amber-900">COMMENCER L'AVENTURE</button>
+                </div>
+
+                <div id="summary-screen" class="hidden">
+                    <h2 id="summary-name" class="text-2xl font-fantasy font-bold mb-3 text-amber-900"></h2>
+                    <p id="summary-text" class="italic text-gray-700 leading-relaxed mb-6"></p>
+                    <button onclick="startQuestions()" class="w-full bg-green-800 text-white py-3 font-bold rounded uppercase hover:bg-green-700 transition-all">Passer aux Épreuves</button>
+                </div>
+
+                <div id="quiz-screen" class="hidden">
+                    <p id="question-text" class="font-bold text-lg mb-4 text-gray-950"></p>
+                    <div id="options-grid" class="space-y-2"></div>
+                    <div id="feedback-box" class="feedback-box"></div>
+                    <button id="next-q-btn" onclick="processNextQuestion()" class="hidden w-full mt-6 bg-amber-950 text-white py-3 font-bold rounded hover:bg-amber-900">CONTINUER VERS L'OBJECTIF</button>
+                </div>
+
+                <div id="end-screen" class="hidden text-center py-10">
+                    <h2 id="end-title" class="text-4xl font-fantasy font-bold mb-4"></h2>
+                    <p id="end-msg" class="mb-8 text-gray-700"></p>
+                    <button onclick="location.reload()" class="bg-amber-950 text-white px-8 py-3 font-bold rounded hover:bg-amber-900">RECOMMENCER</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center text-xs text-gray-400 border-t border-gray-200 pt-3">Développé pour Sergio parAsistente de programación</div>
+    </div>
+
+    <div id="map-panel">
+        <div id="knight-icon">🏇</div>
+    </div>
+
+</div>
+
+<script>
+    // Banco de Preguntas (5 por tema, 6 temas = 30 preguntas)
+    const levels = [
+        {
+            name: "L'Origine (Ajaccio)",
+            summary: "Napoléon naît en Corse. Un jeune homme ambitieux dans une France révolutionnaire. Réfléchissez : Comment un 'étranger' est-il devenu le visage de la France ?",
+            questions: [
+                { q: "Où est né Napoléon en 1769 ?", options: ["Ajaccio", "Paris", "Marseille", "Roma"], correct: 0, why: "Il est né à Ajaccio, en Corse, juste après que l'île soit devenue française." },
+                { q: "Quel événement permet son ascension ?", options: ["La Révolution", "Héritage familial", "Un mariage noble", "La chance"], correct: 0, why: "La Révolution a supprimé les privilèges, laissant place au talent militaire." },
+                { q: "Sa formation initiale ?", options: ["Militaire", "Juridique", "Religieuse", "Scientifique"], correct: 0, why: "Il a étudié dans les meilleures écoles militaires de France." },
+                { q: "Quelle langue parlait-il principalement enfant ?", options: ["Corse", "Français", "Anglais", "Espagnol"], correct: 0, why: "Il parlait corse à la maison et n'a appris le français que plus tard." },
+                { q: "En quelle année est-il né ?", options: ["1769", "1789", "1804", "1799"], correct: 0, why: "Napoléon est né le 15 août 1769." }
+            ]
+        },
+        {
+            name: "Le Pouvoir (Paris)",
+            summary: "18 Brumaire. Napoléon prend le contrôle. Le Code Civil naît. Réfléchissez : Est-ce un sauveur ou un dictateur qui a trahi la République ?",
+            questions: [
+                { q: "Quel est son premier titre politique ?", options: ["Premier Consul", "Empereur", "Roi de France", "Président"], correct: 0, why: "Il instaure le Consulat et devient Premier Consul en 1799." },
+                { q: "Le Code Civil (1804) unifie ?", options: ["Les lois civiles", "L'armée", "La religion", "La presse"], correct: 0, why: "Il a créé un cadre légal unifié, base de notre droit actuel." },
+                { q: "Quelle institution a-t-il créée ?", options: ["Le Lycée", "L'Assemblée", "La Police d'État", "Le Sénat"], correct: 0, why: "Il crée les lycées en 1802 pour former l'élite de la nation." },
+                { q: "Quelle était son attitude face à la presse ?", options: ["Censure stricte", "Liberté totale", "Pas d'intérêt", "Censure modérée"], correct: 0, why: "Pour lui, la presse devait être un outil de propagande contrôlé." },
+                { q: "En quelle année est-il devenu Empereur ?", options: ["1804", "1799", "1800", "1815"], correct: 0, why: "Il a été sacré Empereur des Français le 2 décembre 1804." }
+            ]
+        },
+        // --- Niveles Adicionales activados para probar el movimiento ---
+        {
+            name: "Le Sacre (Venise)", // Usando Venecia como punto de control en Italia
+            summary: "Le grand saut vers l'absolu. Il se couronne lui-même. Réfléchissez : Quel message envoie-t-il au Pape et au monde en refusant que l'Église le couronne ?",
+            questions: [
+                { q: "Qui a posé la couronne sur la tête de Napoléon ?", options: ["Lui-même", "Le Pape", "L'Archevêque", "Son général"], correct: 0, why: "Il a refusé de dépendre de l'Église, un acto politique fort." },
+                { q: "Le Sacre (1804) marque-t-il la fin de quoi ?", options: ["La République", "La Révolution", "La guerre", "La liberté"], correct: 0, why: "C'est la transition définitive de la République vers l'Empire." },
+                { q: "Quelle fut la principale victoire d'Italia ?", options: ["Rivoli", "Marengo", "Austerlitz", "Gênes"], correct: 1, why: "Marengo est l'une de ses plus belles victoires en tant que Consul." },
+                { q: "Où s'est tenu le Sacre de l'Empereur ?", options: ["Notre-Dame de Paris", "La Basilique Saint-Pierre", "Invalides", "Versailles"], correct: 0, why: "Le Sacre a eu lieu à Notre-Dame de Paris, pas à Rome." },
+                { q: "Sa Guardia Impériale était ?", options: ["Une troupe d'élite", "Des conscrits", "Des mercenaires", "La milice"], correct: 0, why: "C'étaient les meilleurs soldats, dévoués corps et âme." }
+            ]
+        },
+        {
+            name: "La Campagne (Moscou)",
+            summary: "L'erreur fatale. L'invasion de la Russie. Le 'Général Hiver' bat la Grande Armée. Réfléchissez : L'arrogance d'un génie invaincu peut-elle causer sa perte monumentale ?",
+            questions: [
+                { q: "Quel pays Napoléon a-t-il envahi en 1812 ?", options: ["Russie", "Espagne", "Grande-Bretagne", "Égypte"], correct: 0, why: "La Campagne de Russie fut le début de la fin." },
+                { q: "Quel tactic russe a décimé l'armée ?", options: ["La terre brûlée", "La guerre éclair", "La guérilla", "La trêve"], correct: 0, why: "Les Russes ont tout détruit en se retirant, affamant les Français." },
+                { q: "Quel était son principal ennemi en Russie ?", options: ["Le froid", "L'armée russe", "La maladie", "La faim"], correct: 0, why: "L'hiver russe a été l'ennemi le plus meurtrier de la Grande Armée." },
+                { q: "Quel fut le résultat de la campagne ?", options: ["Défaite catastrophique", "Victoire décisive", "Négociation de paix", "Conquête durable"], correct: 0, why: "Il a perdu 90% de son armée." },
+                { q: "En quelle année débute cette invasion ?", options: ["1812", "1804", "1815", "1800"], correct: 0, why: "L'invasion commence en juin 1812." }
+            ]
+        },
+        {
+            name: "L'Exil (Waterloo)",
+            summary: "L'effondrement. L'exil à l'île d'Elbe, puis les Cent Jours, et enfin Waterloo. Réfléchissez : Un homme seul peut-il défier toute l'Europe unie une dernière fois ?",
+            questions: [
+                { q: "Où se déroule la dernière bataille de Napoléon ?", options: ["Waterloo", "Leipzig", "Moscou", "Elbe"], correct: 0, why: "La Bataille de Waterloo (1815) marque la fin de son règne." },
+                { q: "Où fut-il exilé pour la première fois ?", options: ["Île d'Elbe", "Sainte-Hélène", "Corse", "Saint-Domingue"], correct: 0, why: "Après 1814, il est exilé sur l'île d'Elbe." },
+                { q: "Où fut-il exilé définitivement ?", options: ["Sainte-Hélène", "Île d'Elbe", "Australie", "Canada"], correct: 0, why: "Il meurt en exil sur la lointaine île de Sainte-Hélène." },
+                { q: "Quelle fut la période de son retour ?", options: ["Les Cent Jours", "La Restauration", "Le Consulat", "L'Empire"], correct: 0, why: "Sa brève période de retour au pouvoir s'appelle les Cent Jours." },
+                { q: "En quelle année s'est tenue Waterloo ?", options: ["1815", "1814", "1804", "1821"], correct: 0, why: "Waterloo s'est déroulée le 18 juin 1815." }
+            ]
+        }
+    ];
+
+    let currentLvlIdx = -1;
+    let currentQIdx = 0;
+    let hp = 3;
+    let activeQuestions = [];
+    let stepsPerLevel = 5; // Avance por respuesta
+
+    const knight = document.getElementById('knight-icon');
+    
+    // --- NUEVO SISTEMA DE PASOS XY PARA TU IMAGEN DE MAPA ---
+    // Hemos creado 30 coordenadas XY porcentuales que representan el camino exacto sobre tu imagen.
+    // El caballero avanzará instantáneamente al siguiente punto con cada acierto.
+    const nodes = [
+        // Nivel 0: Ajaccio (0 PASOS - INICIO)
+        {t: 80, l: 50}, 
+        // Pasos intermedios del Nivel 0 (5 pasos)
+        {t: 75, l: 49}, {t: 70, l: 49}, {t: 65, l: 48}, {t: 60, l: 48}, {t: 55, l: 47},
+        
+        // Nivel 1: Paris (6 PASOS AL ACERTAR LA PREGUNTA 5 DE LVL 0)
+        {t: 40, l: 45}, 
+        // Pasos intermedios del Nivel 1 (5 pasos)
+        {t: 41, l: 47}, {t: 42, l: 49}, {t: 43, l: 51}, {t: 44, l: 53}, {t: 44.5, l: 54},
+        
+        // Nivel 2: Venise (6 PASOS AL ACERTAR LA PREGUNTA 5 DE LVL 1)
+        {t: 45, l: 55}, 
+        // Pasos intermedios del Nivel 2 (5 pasos)
+        {t: 40, l: 60}, {t: 35, l: 65}, {t: 30, l: 70}, {t: 25, l: 75}, {t: 22.5, l: 78},
+        
+        // Nivel 3: Moscou (6 PASOS AL ACERTAR LA PREGUNTA 5 DE LVL 2)
+        {t: 20, l: 80}, 
+        // Pasos intermedios del Nivel 3 (5 pasos)
+        {t: 23, l: 72}, {t: 26, l: 64}, {t: 29, l: 56}, {t: 32, l: 48}, {t: 33.5, l: 44},
+        
+        // Nivel 4: Waterloo (6 PASOS AL ACERTAR LA PREGUNTA 5 DE LVL 3)
+        {t: 35, l: 40}, 
+        // Pasos intermedios del Nivel 4 (5 pasos)
+        {t: 40, l: 36}, {t: 45, l: 32}, {t: 50, l: 28}, {t: 55, l: 24}, {t: 57.5, l: 22},
+        
+        // Nivel 5: Ste Hélène (6 PASOS AL ACERTAR LA PREGUNTA 5 DE LVL 4)
+        {t: 60, l: 20}  
+    ];
+
+    function updateHP() {
+        document.getElementById('hp-container').innerHTML = '❤️'.repeat(hp);
+    }
+
+    // Algoritmo Fisher-Yates para barajar
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Mueve al caballero al nodo XY correspondiente del mapa
+    // ¡NUEVO!: Se ejecuta PASO A PASO con cada acierto.
+    function moveKnightToStep() {
+        // Calculamos el índice XY exacto basado en el nivel y la pregunta actual
+        let currentLevelStepBase = currentLvlIdx * 6; // Cada nivel tiene 1 punto de inicio y 5 intermedios
+        let totalQuestionSteps = currentQIdx + 1; // Preguntas acertadas
+        let currentTargetIndex = currentLevelStepBase + totalQuestionSteps;
+
+        const target = nodes[currentTargetIndex] || nodes[0]; // Fallback al nodo inicial
+        knight.style.top = target.t + "%";
+        knight.style.left = target.l + "%";
+    }
+
+    // Avanza al siguiente nivel del juego (y el nodo inicial de la ciudad)
+    function nextStep() {
+        currentLvlIdx++;
+        if (currentLvlIdx >= levels.length) {
+            showEnd(true);
+            return;
+        }
+        
+        // Escondemos pantallas
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('end-screen').classList.add('hidden');
+        
+        // Mostramos el resumen
+        document.getElementById('summary-screen').classList.remove('hidden');
+        const lvl = levels[currentLvlIdx];
+        document.getElementById('summary-name').innerText = lvl.name;
+        document.getElementById('summary-text').innerText = lvl.summary;
+        
+        // Actualizamos HUD
+        document.getElementById('lvl-title').innerText = lvl.name;
+        document.getElementById('lvl-count').innerText = `Question 1 / 5`;
+    }
+
+    // Inicia la serie de 5 preguntas del nivel actual
+    function startQuestions() {
+        document.getElementById('summary-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        
+        currentQIdx = 0;
+        // Barajar preguntas
+        activeQuestions = shuffle([...levels[currentLvlIdx].questions]);
+        showQuestion();
+    }
+
+    // Muestra la pregunta actual y baraja las opciones
+    function showQuestion() {
+        const qData = activeQuestions[currentQIdx];
+        document.getElementById('lvl-count').innerText = `Question ${currentQIdx + 1} / 5`;
+        document.getElementById('question-text').innerText = qData.q;
+        
+        // Feedback y botón de continuar ocultos
+        document.getElementById('feedback-box').style.display = 'none';
+        document.getElementById('next-q-btn').classList.add('hidden');
+        
+        const optionsGrid = document.getElementById('options-grid');
+        optionsGrid.innerHTML = '';
+        
+        // Barajar opciones
+        const opts = qData.options.map((o, i) => ({ text: o, id: i }));
+        shuffle(opts);
+
+        opts.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-choice animate__animated animate__fadeIn';
+            btn.innerText = opt.text;
+            btn.onclick = () => checkAnswer(opt.id, qData.correct);
+            optionsGrid.appendChild(btn);
+        });
+    }
+
+    // Comprueba la respuesta, quita vida y muestra feedback
+    function checkAnswer(selected, correct) {
+        const feedback = document.getElementById('feedback-box');
+        const btns = document.querySelectorAll('.btn-choice');
+        btns.forEach(b => b.disabled = true); // Desactivar botones
+
+        if (selected === correct) {
+            // !!! NUEVO !!!: ¡Mueve al caballero instantáneamente!
+            moveKnightToStep();
+
+            feedback.style.display = 'block';
+            feedback.style.borderColor = 'green';
+            feedback.innerHTML = `<b style="color:green; font-weight:bold">BIEN JOUÉ !</b><br>${activeQuestions[currentQIdx].why}`;
+        } else {
+            hp--;
+            updateHP();
+            feedback.style.display = 'block';
+            feedback.style.borderColor = 'red';
+            feedback.innerHTML = `<b style="color:red; font-weight:bold">ERREUR.</b><br>La réponse était : <i>${activeQuestions[currentQIdx].options[correct]}</i>.<br>${activeQuestions[currentQIdx].why}`;
+            
+            if (hp <= 0) {
+                showEnd(false);
+                return; // Detener el juego
+            }
+        }
+        // Mostramos el botón para avanzar a la siguiente pregunta
+        document.getElementById('next-q-btn').classList.remove('hidden');
+    }
+
+    // Avanza a la siguiente pregunta o nivel si ha terminado
+    function processNextQuestion() {
+        currentQIdx++;
+        if (currentQIdx < 5) {
+            showQuestion();
+        } else {
+            // Siguiente nivel
+            nextStep();
+        }
+    }
+
+    // Pantalla de final de juego (Victoria o Derrota)
+    function showEnd(win) {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('summary-screen').classList.add('hidden');
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('end-screen').classList.remove('hidden');
+        
+        if (win) {
+            document.getElementById('end-title').innerText = "VOTRE LÉGENDE";
+            document.getElementById('end-msg').innerText = "Félicitations, général. Vous avez conquis l'histoire de Napoléon. Votre nom sera gravé sous l'Arc de Triomphe.";
+        } else {
+            document.getElementById('end-title').innerText = "DÉFAITE DÉFINITIVE";
+            document.getElementById('end-title').style.color = "#ff4444";
+            document.getElementById('end-msg').innerText = "Vos erreurs militaires et politiques ont conduit à votre chute. L'histoire vous a oublié, exilé à Sainte-Hélène.";
+            // Mover el caballero al nodo final de exilio (Ste Hélène)
+            knight.style.top = "60%";
+            knight.style.left = "20%";
+        }
+    }
+
+    // Inicialización del juego
+    updateHP();
+    // Colocar al caballero en el inicio (Ajaccio) - Nodo 0
+    knight.style.top = nodes[0].t + "%";
+    knight.style.left = nodes[0].l + "%";
+
+</script>
+
+</body>
+</html>
