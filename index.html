@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Napoléon : Mission Mémoire (Sergio & Gaby)</title>
+    <title>Napoléon : Mission Mémoire (Gaby & Sergio)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;700&display=swap');
@@ -17,7 +17,6 @@
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #E5D3B3; color: var(--ink); font-family: 'Inter', sans-serif; }
         #main-container { display: flex; height: 100vh; width: 100vw; }
         
-        /* Panel Izquierdo UI - Letra Grande para Sergio */
         #left-panel { 
             flex: 0 0 460px; 
             background-color: var(--parchment); 
@@ -29,11 +28,11 @@
             box-shadow: 10px 0 25px rgba(0,0,0,0.3); 
         }
 
-        /* Panel del Mapa */
+        /* LINK DIRECTO PARA QUE NO FALLE EN GITHUB PAGES */
         #map-panel { 
             flex: 1; 
             position: relative; 
-            background-image: url('mapa_napoleon.jpg'); 
+            background-image: url('https://raw.githubusercontent.com/gabyesparza1429-lang/napoleon.jeux/main/mapa_napoleon.jpg'); 
             background-size: 100% 100%; 
             background-repeat: no-repeat; 
             background-position: center; 
@@ -41,7 +40,6 @@
             background-color: #d4bc8d;
         }
 
-        /* Números del mapa dispersos */
         .map-node { 
             position: absolute; width: 65px; height: 65px; border-radius: 50%; background: #D2B48C; 
             border: 4px solid var(--sepia); display: flex; align-items: center; justify-content: center; 
@@ -53,11 +51,9 @@
         .map-node.active { background: #CD853F; color: white; opacity: 1; cursor: pointer; scale: 1.25; box-shadow: 0 0 25px #CD853F; }
         .map-node.completed { background: #2D5A27; color: white; opacity: 1; }
 
-        /* Tipografía Grande */
         #question-text { font-size: 1.8rem; line-height: 1.3; margin-bottom: 2rem; font-weight: 800; color: #2c1a0a; }
         .summary-content { font-size: 1.3rem; line-height: 1.7; }
 
-        /* Botones de Opción con Feedback Visual */
         .btn-choice { 
             background: white; border: 3px solid var(--sepia); padding: 18px; margin: 10px 0; 
             width: 100%; text-align: left; border-radius: 12px; font-size: 1.3rem; color: var(--ink); 
@@ -65,7 +61,6 @@
         }
         .btn-choice:hover:not(:disabled) { background: #F5E6D3; transform: scale(1.01); }
 
-        /* Clases de Feedback */
         .choice-correct { background-color: #22c55e !important; color: white !important; border-color: #166534 !important; }
         .choice-incorrect { background-color: #ef4444 !important; color: white !important; border-color: #991b1b !important; }
         .highlight-correct { border-color: #22c55e !important; background-color: #dcfce7 !important; color: #166534 !important; }
@@ -90,7 +85,6 @@
         </div>
 
         <div id="game-content" class="flex-1 flex flex-col justify-center overflow-y-auto">
-            
             <div id="start-screen" class="text-center py-6 space-y-8">
                 <h1 class="text-4xl font-fantasy text-amber-950 underline decoration-double decoration-amber-800">NAPOLÉON</h1>
                 <p class="text-2xl italic text-amber-900 font-medium">Bonjour Sergio ! Clique sur le <b>Numéro 1</b> sur la carte pour commencer.</p>
@@ -116,13 +110,10 @@
                 <p id="end-message" class="text-2xl font-medium"></p>
                 <button onclick="location.reload()" class="bg-[#4B3621] text-white px-12 py-6 rounded-2xl font-black text-2xl uppercase">RECOMMENCER</button>
             </div>
-
         </div>
     </div>
 
-    <div id="map-panel">
-        <!-- Nodos dinámicos -->
-    </div>
+    <div id="map-panel"></div>
 </div>
 
 <script>
@@ -134,7 +125,7 @@
             questions: [
                 {q: "Où est né Napoléon Bonaparte en 1769 ?", opts: ["Ajaccio", "Paris", "Bastia", "Marseille"], c: 0},
                 {q: "Dans quelle arme était-il expert ?", opts: ["Artillerie", "Marine", "Cavalerie", "Infanterie"], c: 0},
-                {q: "Quel grade a-t-il obtenu à 24 ans ?", opts: ["Général", "Capitaine", "Colonel", "Sergent"], c: 0},
+                {q: "Quel grade a-t-il obtenido à 24 ans ?", opts: ["Général", "Capitaine", "Colonel", "Sergent"], c: 0},
                 {q: "Quel événement a permis son ascension ?", opts: ["La Révolution française", "Un héritage", "La chance", "Le Roi"], c: 0},
                 {q: "Quel était son surnom affectueux ?", opts: ["Le Petit Caporal", "L'Ogre", "Le Grand", "L'Aigle"], c: 0}
             ]
@@ -176,7 +167,7 @@
             ]
         },
         {
-            title: "V. Invasión de Rusia",
+            title: "V. Invasión de Russie",
             pos: {t: 22, l: 82},
             info: "En <b>1812</b>, il attaque la <b>Russie</b>. Les Russes pratiquent la <b>terre brûlée</b> (brûler les ressources). Le froid glacial de l'<b>hiver russe</b> détruit la Grande Armée pendant sa retraite.",
             questions: [
@@ -305,10 +296,10 @@
         es.classList.remove('hidden');
         document.getElementById('end-title').innerText = win ? "VICTOIRE !" : "DÉFAITE TACTIQUE";
         document.getElementById('end-title').style.color = win ? "#22c55e" : "#ef4444";
-        document.getElementById('end-message').innerText = win ? "Félicitations Sergio ! Tu as maîtrisé l'histoire de Napoléon." : "Sergio, les troupes sont décimées. Réessaie.";
+        document.getElementById('end-message').innerText = win ? "Félicitations Sergio ! Tu as maîtrisé l'histoire de Napoléon." : "Sergio, les troupes sont décimées. Relis bien pour mieux répondre.";
     }
 
-    initGame();
+    window.onload = initGame;
 </script>
 </body>
 </html>
