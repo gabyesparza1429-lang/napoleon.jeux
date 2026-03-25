@@ -29,7 +29,7 @@
             box-shadow: 10px 0 25px rgba(0,0,0,0.3); 
         }
 
-        /* Panel del mapa - Enlace directo al RAW de GitHub */
+        /* Panel del mapa */
         #map-panel { 
             flex: 1; 
             position: relative; 
@@ -78,7 +78,6 @@
 
 <div id="main-container">
     <div id="left-panel">
-        <!-- Indicador de vidas -->
         <div class="bg-[#EAD8C0] flex justify-between items-center p-4 rounded-xl border-2 border-[#6F4E37] mb-6">
             <div>
                 <span class="text-xs uppercase font-black text-amber-900">Vies de Sergio</span>
@@ -91,21 +90,18 @@
         </div>
 
         <div id="game-content" class="flex-1 flex flex-col justify-center overflow-y-auto">
-            <!-- Pantalla de inicio -->
             <div id="start-screen" class="text-center py-6 space-y-8">
                 <h1 class="text-4xl font-fantasy text-amber-950 underline decoration-double decoration-amber-800">NAPOLÉON</h1>
                 <p class="text-2xl italic text-amber-900 font-medium">Bonjour Sergio ! Clique sur le <b>Numéro 1</b> ou sur le bouton pour commencer.</p>
                 <button onclick="startCurrentLevel()" class="w-full bg-[#4B3621] text-white py-6 rounded-2xl font-black uppercase text-xl tracking-widest shadow-2xl hover:bg-black transition-all">COMMENCER LA MISSION</button>
             </div>
 
-            <!-- Pantalla de preparación (Estudio) -->
             <div id="summary-screen" class="hidden flex flex-col h-full">
                 <h2 class="text-3xl font-fantasy border-b-4 border-amber-800 pb-2 mb-4" id="summary-title"></h2>
                 <div id="summary-text" class="summary-content text-justify space-y-6 bg-amber-50 p-6 rounded-2xl border-2 border-amber-200 overflow-y-auto"></div>
                 <button onclick="startQuiz()" class="w-full mt-auto bg-[#4B3621] text-white py-6 rounded-2xl font-black uppercase text-xl tracking-widest shadow-2xl hover:bg-black">J'AI TOUT LU ➔</button>
             </div>
 
-            <!-- Pantalla de preguntas -->
             <div id="quiz-screen" class="hidden space-y-4">
                 <div class="flex justify-between items-end mb-2">
                     <span id="q-counter" class="text-sm font-black bg-amber-900 text-white px-3 py-1 rounded-full">1/5</span>
@@ -115,7 +111,6 @@
                 <button id="next-btn" onclick="processNextQuestion()" class="hidden w-full mt-8 bg-[#4B3621] text-white py-6 rounded-2xl font-black text-2xl shadow-2xl hover:bg-black">CONTINUER ➔</button>
             </div>
 
-            <!-- Pantalla de fin de juego -->
             <div id="end-screen" class="hidden text-center py-10 space-y-8">
                 <h2 id="end-title" class="text-5xl font-fantasy"></h2>
                 <p id="end-message" class="text-2xl font-medium"></p>
@@ -124,7 +119,6 @@
         </div>
     </div>
 
-    <!-- Panel del Mapa donde se dibujan los nodos -->
     <div id="map-panel"></div>
 </div>
 
@@ -132,7 +126,7 @@
     const themes = [
         {
             title: "I. Jeunesse & Ascension",
-            pos: {t: 25, l: 20}, // Revolución y Ascenso
+            pos: {t: 25, l: 20},
             info: "Napoléon Bonaparte est né le <b>15 août 1769 à Ajaccio</b>, en Corse. À l'école militaire, il devient un expert en <b>Artillerie</b> (les canons). Grâce au chaos de la <b>Révolution française</b>, il prouve son talent et devient <b>Général</b> à seulement 24 ans. Ses soldats l'appelaient le <b>'Petit Caporal'</b>.",
             questions: [
                 {q: "Où est né Napoléon Bonaparte en 1769 ?", opts: ["Ajaccio", "Paris", "Bastia", "Marseille"], c: 0},
@@ -144,7 +138,7 @@
         },
         {
             title: "II. Campagnes en Italie",
-            pos: {t: 55, l: 20}, // Campañas en Italia
+            pos: {t: 55, l: 20},
             info: "En <b>1796</b>, Napoléon dirige l'<b>Armée d'Italie</b>. Il remporte des victoires foudroyantes contre l'<b>Autriche</b>, notamment à <b>Rivoli</b>. C'est à ce moment-là qu'il devient un véritable <b>Héros National</b> aux yeux des Français.",
             questions: [
                 {q: "Quelle armée Napoléon dirige-t-il en 1796 ?", opts: ["L'Armée d'Italie", "L'Armée du Nord", "La Royale", "Le Rhin"], c: 0},
@@ -156,7 +150,7 @@
         },
         {
             title: "III. Guerra en España",
-            pos: {t: 75, l: 20}, // Guerra en España
+            pos: {t: 75, l: 20},
             info: "En 1808, Napoléon envahit l'<b>Espagne</b>. Le peuple espagnol résiste violemment en utilisant la <b>Guérilla</b> (petite guerre). Cette guerre dure des années et affaiblit terriblement la <b>Grande Armée</b> de Napoléon.",
             questions: [
                 {q: "Quel pays Napoléon envahit-il en 1808 ?", opts: ["L'Espagne", "La Russie", "L'Angleterre", "L'Italie"], c: 0},
@@ -168,7 +162,7 @@
         },
         {
             title: "IV. Imperio Francés",
-            pos: {t: 45, l: 50}, // Imperio Francés (Centro)
+            pos: {t: 45, l: 50},
             info: "En <b>1804</b>, Napoléon devient <b>Empereur</b>. Son plus grand héritage est le <b>Code Civil</b> de 1804, qui garantit l'égalité devant la loi. Il crée aussi la <b>Légion d'Honneur</b> pour récompenser les citoyens méritants.",
             questions: [
                 {q: "En quelle année Napoléon devient-il Empereur ?", opts: ["1804", "1799", "1815", "1812"], c: 0},
@@ -180,7 +174,7 @@
         },
         {
             title: "V. Invasión de Russie",
-            pos: {t: 25, l: 80}, // Invasión de Rusia
+            pos: {t: 25, l: 80},
             info: "En <b>1812</b>, Napoléon attaque la <b>Russie</b>. Les Russes pratiquent la politique de la <b>terre brûlée</b>. Le froid glacial de l'<b>hiver russe</b> détruit la Grande Armée pendant sa retraite.",
             questions: [
                 {q: "En quelle année envahit-il la Russie ?", opts: ["1812", "1804", "1815", "1800"], c: 0},
@@ -192,7 +186,7 @@
         },
         {
             title: "VI. Waterloo et Exil",
-            pos: {t: 60, l: 85}, // Derrota y Exilio
+            pos: {t: 60, l: 85},
             info: "Le 18 juin <b>1815</b>, il perd à <b>Waterloo</b>. Il est exilé sur l'île de <b>Sainte-Hélène</b>, dans l'Atlantique, où il meurt le 5 mai <b>1821</b>.",
             questions: [
                 {q: "Où a lieu sa dernière bataille ?", opts: ["Waterloo", "Austerlitz", "Leipzig", "Paris"], c: 0},
@@ -205,8 +199,8 @@
     ];
 
     let currentLvl = 0, currentQ = 0, hp = 3, activeQs = [];
+    window.selectedLvlForQuiz = 0;
 
-    // Inicialización del mapa y nodos
     function initGame() {
         const panel = document.getElementById('map-panel');
         panel.innerHTML = '';
@@ -217,14 +211,12 @@
             node.style.top = t.pos.t + '%';
             node.style.left = t.pos.l + '%';
             node.innerText = i + 1;
-            // Solo permitimos clics si el nivel no está "locked"
             node.onclick = () => { if(!node.classList.contains('locked')) startLevel(i); };
             panel.appendChild(node);
         });
         updateVisuals();
     }
 
-    // Actualiza el estado visual de los nodos (bloqueado/desbloqueado)
     function updateVisuals() {
         themes.forEach((_, i) => {
             const node = document.getElementById(`node-${i}`);
@@ -241,36 +233,30 @@
         });
     }
 
-    // Inicia el nivel actual desde el botón "Commencer"
     function startCurrentLevel() {
         startLevel(currentLvl);
     }
 
-    // Muestra el resumen de preparación
     function startLevel(idx) {
+        window.selectedLvlForQuiz = idx;
         document.getElementById('start-screen').classList.add('hidden');
         document.getElementById('summary-screen').classList.remove('hidden');
         document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('end-screen').classList.add('hidden');
+        document.getElementById('game-content').classList.remove('hidden');
         document.getElementById('summary-title').innerText = themes[idx].title;
         document.getElementById('summary-text').innerHTML = themes[idx].info;
-        
-        // Guardamos el nivel seleccionado temporalmente para el quiz
-        window.selectedLvlForQuiz = idx;
     }
 
-    // Comienza la ronda de preguntas
     function startQuiz() {
         document.getElementById('summary-screen').classList.add('hidden');
         document.getElementById('quiz-screen').classList.remove('hidden');
         currentQ = 0;
-        
-        // Usamos el nivel que el usuario seleccionó (puede ser uno ya completado)
         const lvlIdx = window.selectedLvlForQuiz;
         activeQs = [...themes[lvlIdx].questions].sort(() => Math.random() - 0.5);
         loadQ();
     }
 
-    // Carga la pregunta actual
     function loadQ() {
         const qData = activeQs[currentQ];
         document.getElementById('question-text').innerText = qData.q;
@@ -278,8 +264,6 @@
         document.getElementById('q-counter').innerText = `${currentQ+1}/5`;
         const grid = document.getElementById('options-grid');
         grid.innerHTML = '';
-        
-        // Mapear opciones con índice original para validar
         const opts = qData.opts.map((text, index) => ({text, id: index}));
         opts.sort(() => Math.random() - 0.5);
         opts.forEach(o => {
@@ -292,7 +276,6 @@
         });
     }
 
-    // Valida la respuesta seleccionada
     function check(selectedId, data) {
         const btns = document.querySelectorAll('.btn-choice');
         btns.forEach(b => b.disabled = true);
@@ -307,31 +290,29 @@
             correctBtn.classList.add('choice-correct', 'highlight-correct');
             hp--;
             updateHP();
-            if (hp <= 0) { end(false); return; }
+            if (hp <= 0) { 
+                setTimeout(() => end(false), 1000); 
+                return; 
+            }
         }
         document.getElementById('next-btn').classList.remove('hidden');
     }
 
-    // Pasa a la siguiente pregunta o completa el nivel
     function processNextQuestion() {
         currentQ++;
         if (currentQ < 5) {
             loadQ();
         } else {
-            // Si estamos en el nivel máximo alcanzado, desbloqueamos el siguiente
             if (window.selectedLvlForQuiz === currentLvl) {
                 currentLvl++;
             }
-            
             if (currentLvl < themes.length || window.selectedLvlForQuiz < themes.length - 1) {
                 updateVisuals();
                 document.getElementById('quiz-screen').classList.add('hidden');
                 document.getElementById('start-screen').classList.remove('hidden');
-                
                 const nextTxt = (currentLvl < themes.length) ? 
                     `Bravo Sergio ! Clique sur le <b>numéro ${currentLvl + 1}</b> pour continuer.` : 
                     "Excellent ! Tu peux continuer de réviser les étapes précédentes.";
-                
                 document.getElementById('start-screen').querySelector('p').innerHTML = nextTxt;
             } else {
                 end(true);
@@ -339,10 +320,10 @@
         }
     }
 
-    // Actualiza el HUD de corazones
-    function updateHP() { document.getElementById('hp-display').innerHTML = '❤️'.repeat(hp) + '🖤'.repeat(3-hp); }
+    function updateHP() { 
+        document.getElementById('hp-display').innerHTML = '❤️'.repeat(hp) + '🖤'.repeat(3-hp); 
+    }
 
-    // Pantalla de victoria o derrota final
     function end(win) {
         document.getElementById('game-content').classList.add('hidden');
         const es = document.getElementById('end-screen');
@@ -366,9 +347,7 @@
             btn.onclick = () => {
                 hp = 3;
                 updateHP();
-                es.classList.add('hidden');
-                document.getElementById('game-content').classList.remove('hidden');
-                startLevel(window.selectedLvlForQuiz); // Reinicia desde el resumen del nivel seleccionado
+                startLevel(window.selectedLvlForQuiz);
             };
         }
     }
