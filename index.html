@@ -118,7 +118,7 @@
             <div id="end-screen" class="hidden text-center py-10 space-y-8">
                 <h2 id="end-title" class="text-5xl font-fantasy"></h2>
                 <p id="end-message" class="text-2xl font-medium"></p>
-                <button onclick="location.reload()" class="bg-[#4B3621] text-white px-12 py-6 rounded-2xl font-black text-2xl uppercase">RECOMMENCER</button>
+                <button id="end-action-btn" class="bg-[#4B3621] text-white px-12 py-6 rounded-2xl font-black text-2xl uppercase shadow-xl hover:scale-105 transition-transform"></button>
             </div>
         </div>
     </div>
@@ -186,7 +186,7 @@
                 {q: "Quelle tactique les Russes utilisent-ils ?", opts: ["La terre brûlée", "Le blocus", "L'artillerie", "Le duel"], c: 0},
                 {q: "Quel fut le pire ennemi en Russie ?", opts: ["Le froid (hiver russe)", "La mer", "La pluie", "La faim"], c: 0},
                 {q: "Comment s'appelle son armée ?", opts: ["La Grande Armée", "Les Bleus", "Légion", "Centurions"], c: 0},
-                {q: "Résultat de cette campagne ?", opts: ["Désastre total", "Victoire", "Statu quo", "Succès"], c: 0}
+                {q: "Résultat de cette campaña ?", opts: ["Désastre total", "Victoire", "Statu quo", "Succès"], c: 0}
             ]
         },
         {
@@ -318,9 +318,30 @@
         document.getElementById('game-content').classList.add('hidden');
         const es = document.getElementById('end-screen');
         es.classList.remove('hidden');
-        document.getElementById('end-title').innerText = win ? "VICTOIRE !" : "DÉFAITE TACTIQUE";
-        document.getElementById('end-title').style.color = win ? "#22c55e" : "#ef4444";
-        document.getElementById('end-message').innerText = win ? "Félicitations Sergio ! Tu as maîtrisé l'histoire de Napoléon." : "Sergio, les troupes sont décimées. Relis bien pour mieux répondre.";
+        
+        const title = document.getElementById('end-title');
+        const msg = document.getElementById('end-message');
+        const btn = document.getElementById('end-action-btn');
+
+        if (win) {
+            title.innerText = "VICTOIRE !";
+            title.style.color = "#22c55e";
+            msg.innerText = "Félicitations Sergio ! Tu as maîtrisé l'histoire de Napoléon.";
+            btn.innerText = "RECOMMENCER TOUT";
+            btn.onclick = () => location.reload();
+        } else {
+            title.innerText = "DÉFAITE TACTIQUE";
+            title.style.color = "#ef4444";
+            msg.innerText = "Sergio, les troupes sont décimées. Relis bien pour mieux répondre.";
+            btn.innerText = "RÉESSAYER LE NIVEAU";
+            btn.onclick = () => {
+                hp = 3;
+                updateHP();
+                es.classList.add('hidden');
+                document.getElementById('game-content').classList.remove('hidden');
+                startLevel(currentLvl); // Reinicia desde el resumen del nivel actual
+            };
+        }
     }
 
     window.onload = initGame;
