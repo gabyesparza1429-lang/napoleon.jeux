@@ -17,6 +17,7 @@
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #E5D3B3; color: var(--ink); font-family: 'Inter', sans-serif; }
         #main-container { display: flex; height: 100vh; width: 100vw; }
         
+        /* Panel izquierdo de interfaz */
         #left-panel { 
             flex: 0 0 460px; 
             background-color: var(--parchment); 
@@ -28,7 +29,7 @@
             box-shadow: 10px 0 25px rgba(0,0,0,0.3); 
         }
 
-        /* LINK DIRECTO PARA QUE NO FALLE EN GITHUB PAGES */
+        /* Panel del mapa - Enlace directo al RAW de GitHub */
         #map-panel { 
             flex: 1; 
             position: relative; 
@@ -40,6 +41,7 @@
             background-color: #d4bc8d;
         }
 
+        /* Estilo de los números en el mapa */
         .map-node { 
             position: absolute; width: 65px; height: 65px; border-radius: 50%; background: #D2B48C; 
             border: 4px solid var(--sepia); display: flex; align-items: center; justify-content: center; 
@@ -51,9 +53,11 @@
         .map-node.active { background: #CD853F; color: white; opacity: 1; cursor: pointer; scale: 1.25; box-shadow: 0 0 25px #CD853F; }
         .map-node.completed { background: #2D5A27; color: white; opacity: 1; }
 
+        /* Estilo de textos grandes */
         #question-text { font-size: 1.8rem; line-height: 1.3; margin-bottom: 2rem; font-weight: 800; color: #2c1a0a; }
         .summary-content { font-size: 1.3rem; line-height: 1.7; }
 
+        /* Botones de respuesta */
         .btn-choice { 
             background: white; border: 3px solid var(--sepia); padding: 18px; margin: 10px 0; 
             width: 100%; text-align: left; border-radius: 12px; font-size: 1.3rem; color: var(--ink); 
@@ -61,6 +65,7 @@
         }
         .btn-choice:hover:not(:disabled) { background: #F5E6D3; transform: scale(1.01); }
 
+        /* Colores de feedback */
         .choice-correct { background-color: #22c55e !important; color: white !important; border-color: #166534 !important; }
         .choice-incorrect { background-color: #ef4444 !important; color: white !important; border-color: #991b1b !important; }
         .highlight-correct { border-color: #22c55e !important; background-color: #dcfce7 !important; color: #166534 !important; }
@@ -73,6 +78,7 @@
 
 <div id="main-container">
     <div id="left-panel">
+        <!-- Indicador de vidas -->
         <div class="bg-[#EAD8C0] flex justify-between items-center p-4 rounded-xl border-2 border-[#6F4E37] mb-6">
             <div>
                 <span class="text-xs uppercase font-black text-amber-900">Vies de Sergio</span>
@@ -85,17 +91,20 @@
         </div>
 
         <div id="game-content" class="flex-1 flex flex-col justify-center overflow-y-auto">
+            <!-- Pantalla de inicio -->
             <div id="start-screen" class="text-center py-6 space-y-8">
                 <h1 class="text-4xl font-fantasy text-amber-950 underline decoration-double decoration-amber-800">NAPOLÉON</h1>
                 <p class="text-2xl italic text-amber-900 font-medium">Bonjour Sergio ! Clique sur le <b>Numéro 1</b> sur la carte pour commencer.</p>
             </div>
 
+            <!-- Pantalla de preparación (Estudio) -->
             <div id="summary-screen" class="hidden flex flex-col h-full">
                 <h2 class="text-3xl font-fantasy border-b-4 border-amber-800 pb-2 mb-4" id="summary-title"></h2>
                 <div id="summary-text" class="summary-content text-justify space-y-6 bg-amber-50 p-6 rounded-2xl border-2 border-amber-200 overflow-y-auto"></div>
                 <button onclick="startQuiz()" class="w-full mt-auto bg-[#4B3621] text-white py-6 rounded-2xl font-black uppercase text-xl tracking-widest shadow-2xl hover:bg-black">J'AI TOUT LU ➔</button>
             </div>
 
+            <!-- Pantalla de preguntas -->
             <div id="quiz-screen" class="hidden space-y-4">
                 <div class="flex justify-between items-end mb-2">
                     <span id="q-counter" class="text-sm font-black bg-amber-900 text-white px-3 py-1 rounded-full">1/5</span>
@@ -105,6 +114,7 @@
                 <button id="next-btn" onclick="processNextQuestion()" class="hidden w-full mt-8 bg-[#4B3621] text-white py-6 rounded-2xl font-black text-2xl shadow-2xl hover:bg-black">CONTINUER ➔</button>
             </div>
 
+            <!-- Pantalla de fin de juego -->
             <div id="end-screen" class="hidden text-center py-10 space-y-8">
                 <h2 id="end-title" class="text-5xl font-fantasy"></h2>
                 <p id="end-message" class="text-2xl font-medium"></p>
@@ -113,6 +123,7 @@
         </div>
     </div>
 
+    <!-- Panel del Mapa donde se dibujan los nodos -->
     <div id="map-panel"></div>
 </div>
 
@@ -120,19 +131,19 @@
     const themes = [
         {
             title: "I. Jeunesse & Ascension",
-            pos: {t: 22, l: 15},
+            pos: {t: 25, l: 20}, // Revolución y Ascenso
             info: "Napoléon Bonaparte est né le <b>15 août 1769 à Ajaccio</b>, en Corse. À l'école militaire, il devient un expert en <b>Artillerie</b> (les canons). Grâce au chaos de la <b>Révolution française</b>, il prouve son talent et devient <b>Général</b> à seulement 24 ans. Ses soldats l'appelaient le <b>'Petit Caporal'</b>.",
             questions: [
                 {q: "Où est né Napoléon Bonaparte en 1769 ?", opts: ["Ajaccio", "Paris", "Bastia", "Marseille"], c: 0},
                 {q: "Dans quelle arme était-il expert ?", opts: ["Artillerie", "Marine", "Cavalerie", "Infanterie"], c: 0},
-                {q: "Quel grade a-t-il obtenido à 24 ans ?", opts: ["Général", "Capitaine", "Colonel", "Sergent"], c: 0},
+                {q: "Quel grade a-t-il obtenu à 24 ans ?", opts: ["Général", "Capitaine", "Colonel", "Sergent"], c: 0},
                 {q: "Quel événement a permis son ascension ?", opts: ["La Révolution française", "Un héritage", "La chance", "Le Roi"], c: 0},
                 {q: "Quel était son surnom affectueux ?", opts: ["Le Petit Caporal", "L'Ogre", "Le Grand", "L'Aigle"], c: 0}
             ]
         },
         {
             title: "II. Campagnes en Italie",
-            pos: {t: 50, l: 15},
+            pos: {t: 55, l: 20}, // Campañas en Italia
             info: "En <b>1796</b>, Napoléon dirige l'<b>Armée d'Italie</b>. Il remporte des victoires foudroyantes contre l'<b>Autriche</b>, notamment à <b>Rivoli</b>. C'est à ce moment-là qu'il devient un véritable <b>Héros National</b> aux yeux des Français.",
             questions: [
                 {q: "Quelle armée Napoléon dirige-t-il en 1796 ?", opts: ["L'Armée d'Italie", "L'Armée du Nord", "La Royale", "Le Rhin"], c: 0},
@@ -143,33 +154,33 @@
             ]
         },
         {
-            title: "III. La Prise du Pouvoir",
-            pos: {t: 75, l: 15},
-            info: "En <b>1799</b>, Napoléon prend le pouvoir lors du coup d'État du <b>18 Brumaire</b>. Il devient <b>Premier Consul</b>. Il crée le <b>Franc Germinal</b> (monnaie d'or) et signe le <b>Concordat</b> en 1801 avec le Pape pour la paix religieuse.",
+            title: "III. Guerra en España",
+            pos: {t: 75, l: 20}, // Guerra en España
+            info: "En 1808, Napoléon envahit l'<b>Espagne</b>. Le peuple espagnol résiste violemment en utilisant la <b>Guérilla</b> (petite guerre). Cette guerre dure des années et affaiblit terriblement la <b>Grande Armée</b> de Napoléon.",
             questions: [
-                {q: "Quelle est l'année du coup d'État ?", opts: ["1799", "1804", "1789", "1815"], c: 0},
-                {q: "Comment s'appelle son coup d'État ?", opts: ["18 Brumaire", "Bastille", "Thermidor", "Brumaire"], c: 0},
-                {q: "Quel titre prend-il en 1799 ?", opts: ["Premier Consul", "Empereur", "Roi", "Président"], c: 0},
-                {q: "Quelle monnaie d'or a-t-il créée ?", opts: ["Franc Germinal", "Euro", "Livre", "Dollar"], c: 0},
-                {q: "Quel accord signe-t-il en 1801 ?", opts: ["Le Concordat", "Le Code Civil", "La Trêve", "La Paix"], c: 0}
+                {q: "Quel pays Napoléon envahit-il en 1808 ?", opts: ["L'Espagne", "La Russie", "L'Angleterre", "L'Italie"], c: 0},
+                {q: "Quelle tactique de résistance les Espagnols inventent-ils ?", opts: ["La Guérilla", "Le Blocus", "L'Artillerie", "La Cavalerie"], c: 0},
+                {q: "Comment s'appelle l'armée de Napoléon ?", opts: ["La Grande Armée", "Les Bleus", "Les Centurions", "Légion"], c: 0},
+                {q: "L'Espagne a été pour Napoléon :", opts: ["Un échec épuisant", "Une victoire facile", "Un allié fidèle", "Un désert"], c: 0},
+                {q: "En quelle année l'invasion de l'Espagne a-t-elle commencé ?", opts: ["1808", "1815", "1799", "1804"], c: 0}
             ]
         },
         {
-            title: "IV. L'Empire et les Réformes",
-            pos: {t: 45, l: 50},
-            info: "Sacré <b>Empereur</b> en <b>1804</b>, il se couronne lui-même à Notre-Dame. Son plus grand héritage est le <b>Code Civil</b> (ses lois). Il crée aussi la <b>Légion d'Honneur</b> pour le mérite et fonde les <b>Lycées</b> pour l'éducation.",
+            title: "IV. Imperio Francés",
+            pos: {t: 45, l: 50}, // Imperio Francés (Centro)
+            info: "En <b>1804</b>, Napoléon devient <b>Empereur</b>. Son plus grand héritage est le <b>Code Civil</b> de 1804, qui garantit l'égalité devant la loi. Il crée aussi la <b>Légion d'Honneur</b> pour récompenser les citoyens méritants.",
             questions: [
-                {q: "En quelle année devient-il Empereur ?", opts: ["1804", "1799", "1815", "1812"], c: 0},
-                {q: "Quel est l'héritage le plus célèbre ?", opts: ["Le Code Civil", "Ses bijoux", "Son cheval", "Ses chapeaux"], c: 0},
+                {q: "En quelle année Napoléon devient-il Empereur ?", opts: ["1804", "1799", "1815", "1812"], c: 0},
+                {q: "Quel est l'héritage le plus célèbre de Napoléon ?", opts: ["Le Code Civil", "Ses bijoux", "Son cheval", "Ses chapeaux"], c: 0},
                 {q: "Que garantit le Code Civil ?", opts: ["L'égalité devant la loi", "Le vol", "Le titre de roi", "Le repos"], c: 0},
-                {q: "Quelle distinction a-t-il créée ?", opts: ["La Légion d'Honneur", "Le Nobel", "L'Oscar", "Le César"], c: 0},
-                {q: "Où a eu lieu le sacre ?", opts: ["Notre-Dame de Paris", "Tour Eiffel", "Versailles", "Rome"], c: 0}
+                {q: "Quelle distinction Napoléon a-t-il créée ?", opts: ["La Légion d'Honneur", "Le Prix Nobel", "L'Oscar", "Le César"], c: 0},
+                {q: "Où a eu lieu le sacre de Napoléon ?", opts: ["Notre-Dame de Paris", "Tour Eiffel", "Versailles", "Rome"], c: 0}
             ]
         },
         {
             title: "V. Invasión de Russie",
-            pos: {t: 22, l: 82},
-            info: "En <b>1812</b>, il attaque la <b>Russie</b>. Les Russes pratiquent la <b>terre brûlée</b> (brûler les ressources). Le froid glacial de l'<b>hiver russe</b> détruit la Grande Armée pendant sa retraite.",
+            pos: {t: 25, l: 80}, // Invasión de Rusia
+            info: "En <b>1812</b>, Napoléon attaque la <b>Russie</b>. Les Russes pratiquent la politique de la <b>terre brûlée</b>. Le froid glacial de l'<b>hiver russe</b> détruit la Grande Armée pendant sa retraite.",
             questions: [
                 {q: "En quelle année envahit-il la Russie ?", opts: ["1812", "1804", "1815", "1800"], c: 0},
                 {q: "Quelle tactique les Russes utilisent-ils ?", opts: ["La terre brûlée", "Le blocus", "L'artillerie", "Le duel"], c: 0},
@@ -180,7 +191,7 @@
         },
         {
             title: "VI. Waterloo et Exil",
-            pos: {t: 55, l: 82},
+            pos: {t: 60, l: 85}, // Derrota y Exilio
             info: "Le 18 juin <b>1815</b>, il perd à <b>Waterloo</b>. Il est exilé sur l'île de <b>Sainte-Hélène</b>, dans l'Atlantique, où il meurt le 5 mai <b>1821</b>.",
             questions: [
                 {q: "Où a lieu sa dernière bataille ?", opts: ["Waterloo", "Austerlitz", "Leipzig", "Paris"], c: 0},
@@ -194,6 +205,7 @@
 
     let currentLvl = 0, currentQ = 0, hp = 3, activeQs = [];
 
+    // Inicialización del mapa y nodos
     function initGame() {
         const panel = document.getElementById('map-panel');
         panel.innerHTML = '';
@@ -210,6 +222,7 @@
         updateVisuals();
     }
 
+    // Actualiza el estado visual de los nodos (bloqueado/desbloqueado)
     function updateVisuals() {
         themes.forEach((_, i) => {
             const node = document.getElementById(`node-${i}`);
@@ -221,6 +234,7 @@
         });
     }
 
+    // Muestra el resumen de preparación
     function startLevel(idx) {
         document.getElementById('start-screen').classList.add('hidden');
         document.getElementById('summary-screen').classList.remove('hidden');
@@ -229,14 +243,17 @@
         document.getElementById('summary-text').innerHTML = themes[idx].info;
     }
 
+    // Comienza la ronda de preguntas
     function startQuiz() {
         document.getElementById('summary-screen').classList.add('hidden');
         document.getElementById('quiz-screen').classList.remove('hidden');
         currentQ = 0;
+        // Mezclamos las preguntas para que sea un reto de memoria real
         activeQs = [...themes[currentLvl].questions].sort(() => Math.random() - 0.5);
         loadQ();
     }
 
+    // Carga la pregunta actual
     function loadQ() {
         const qData = activeQs[currentQ];
         document.getElementById('question-text').innerText = qData.q;
@@ -244,6 +261,8 @@
         document.getElementById('q-counter').innerText = `${currentQ+1}/5`;
         const grid = document.getElementById('options-grid');
         grid.innerHTML = '';
+        
+        // Mapear opciones con índice original para validar
         const opts = qData.opts.map((text, index) => ({text, id: index}));
         opts.sort(() => Math.random() - 0.5);
         opts.forEach(o => {
@@ -256,12 +275,14 @@
         });
     }
 
+    // Valida la respuesta seleccionada
     function check(selectedId, data) {
         const btns = document.querySelectorAll('.btn-choice');
         btns.forEach(b => b.disabled = true);
         const correctId = data.c;
         const selectedBtn = document.getElementById(`opt-${selectedId}`);
         const correctBtn = document.getElementById(`opt-${correctId}`);
+        
         if (selectedId === correctId) {
             selectedBtn.classList.add('choice-correct');
         } else {
@@ -274,6 +295,7 @@
         document.getElementById('next-btn').classList.remove('hidden');
     }
 
+    // Pasa a la siguiente pregunta o completa el nivel
     function processNextQuestion() {
         currentQ++;
         if (currentQ < 5) loadQ();
@@ -288,8 +310,10 @@
         }
     }
 
+    // Actualiza el HUD de corazones
     function updateHP() { document.getElementById('hp-display').innerHTML = '❤️'.repeat(hp) + '🖤'.repeat(3-hp); }
 
+    // Pantalla de victoria o derrota final
     function end(win) {
         document.getElementById('game-content').classList.add('hidden');
         const es = document.getElementById('end-screen');
