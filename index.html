@@ -29,7 +29,7 @@
             box-shadow: 10px 0 25px rgba(0,0,0,0.3); 
         }
 
-        /* Panel del Mapa */
+        /* Panel del Mapa - Ajustado a .jpg para GitHub Pages */
         #map-panel { 
             flex: 1; 
             position: relative; 
@@ -143,7 +143,7 @@
     const themes = [
         {
             title: "I. Jeunesse & Ascension",
-            pos: {t: 82, l: 50}, // Córcega (Abajo centro)
+            pos: {t: 22, l: 18}, // Revolución y Ascenso (Arriba Izquierda)
             info: "Sergio, lis attentivement : Napoléon Bonaparte est né le <b>15 août 1769 à Ajaccio</b>, en Corse. À l'école militaire, il devient un expert en <b>Artillerie</b> (le maniement des canons). Grâce au chaos de la <b>Révolution française</b>, il prouve son talent et devient <b>Général</b> à seulement 24 ans. Ses soldats l'appelaient affectueusement le <b>'Petit Caporal'</b>.",
             questions: [
                 {q: "Où est né Napoléon Bonaparte en 1769 ?", opts: ["Ajaccio", "Paris", "Bastia", "Marseille"], c: 0, w: "Il est né à Ajaccio en Corse."},
@@ -154,63 +154,63 @@
             ]
         },
         {
-            title: "II. Le Pouvoir (18 Brumaire)",
-            pos: {t: 30, l: 35}, // París (Noroeste)
-            info: "Le 9 novembre <b>1799</b>, Napoléon prend le pouvoir lors du coup d'État du <b>18 Brumaire</b>. Il stabilise la France en créant le <b>Franc Germinal</b> (une monnaie solide en or). Il signe aussi le <b>Concordat</b> en 1801 avec le Pape pour ramener la paix religieuse. Il devient alors <b>Premier Consul</b>.",
+            title: "II. Campagnes en Italie",
+            pos: {t: 48, l: 16}, // Campañas en Italia (Medio Izquierda)
+            info: "Sergio, n'oublie pas : En 1796, Napoléon prend la tête de l'<b>Armée d'Italie</b>. Il remporte des victoires foudroyantes contre l'<b>Autriche</b>, notamment à <b>Rivoli</b>. C'est à ce moment-là qu'il devient un véritable héros national pour les Français.",
             questions: [
-                {q: "En quelle année Napoléon prend-il le pouvoir ?", opts: ["1799", "1804", "1789", "1815"], c: 0, w: "Il prend le pouvoir en 1799."},
-                {q: "Quel est le nom de son coup d'État ?", opts: ["18 Brumaire", "La Bastille", "Thermidor", "Waterloo"], c: 0, w: "C'est le célèbre 18 Brumaire."},
-                {q: "Quelle monnaie d'or a-t-il créée ?", opts: ["Franc Germinal", "Euro", "Livre", "Dollar"], c: 0, w: "Le Franc Germinal a stabilisé l'économie."},
-                {q: "Quel accord a-t-il signé avec le Pape ?", opts: ["Le Concordat", "Le Code Civil", "La Trêve", "La Paix"], c: 0, w: "Il a signé le Concordat en 1801."},
-                {q: "Quel titre portait-il en 1799 ?", opts: ["Premier Consul", "Empereur", "Roi", "Président"], c: 0, w: "Il a dirigé le Consulat."}
+                {q: "Quelle armée Napoléon dirige-t-il en 1796 ?", opts: ["L'Armée d'Italie", "L'Armée du Nord", "La Royale", "L'Armée du Rhin"], c: 0, w: "Il dirigeait l'Armée d'Italie."},
+                {q: "Contre quel pays Napoléon se bat-il en Italie ?", opts: ["L'Autriche", "L'Espagne", "La Russie", "Les USA"], c: 0, w: "Il se battait contre les Autrichiens."},
+                {q: "Quelle est l'une de ses victoires célèbres en Italie ?", opts: ["Rivoli", "Waterloo", "Jena", "Trafalgar"], c: 0, w: "La bataille de Rivoli est emblématique."},
+                {q: "Que devient Napoléon après ses succès en Italie ?", opts: ["Héros National", "Simple soldat", "Roi d'Italie", "Écrivain"], c: 0, w: "Il devient un héros national."},
+                {q: "En quelle année commence la campagne d'Italie ?", opts: ["1796", "1804", "1812", "1769"], c: 0, w: "Elle a débuté en 1796."}
             ]
         },
         {
-            title: "III. L'Empire (1804)",
-            pos: {t: 45, l: 55}, // Italia/Milán (Centro-Este)
-            info: "Sacré <b>Empereur</b> en <b>1804</b> à Notre-Dame, il se couronne <b>lui-même</b> pour montrer son indépendance. Son plus grand héritage est le <b>Code Civil</b> (ses lois unifiées). Il crée aussi la <b>Légion d'Honneur</b> pour récompenser le mérite et fonde les <b>Lycées</b> pour l'éducation des cadres.",
+            title: "III. Guerra en España",
+            pos: {t: 72, l: 16}, // Guerra en España (Abajo Izquierda)
+            info: "En 1808, Napoléon envahit l'<b>Espagne</b>. Le peuple espagnol résiste violemment en utilisant la <b>Guérilla</b> (petite guerre). Cette guerre dure des années et affaiblit terriblement la <b>Grande Armée</b> de Napoléon.",
             questions: [
-                {q: "En quelle année a-t-il été sacré Empereur ?", opts: ["1804", "1800", "1799", "1812"], c: 0, w: "Le Sacre a eu lieu en 1804."},
-                {q: "Qui l'a couronné Empereur ?", opts: ["Lui-même", "Le Pape", "Sa femme", "Le Peuple"], c: 0, w: "Il a posé la couronne lui-même sur sa tête."},
-                {q: "Quel est son héritage de lois le plus célèbre ?", opts: ["Le Code Civil", "Code Pénal", "Code Route", "Code Roi"], c: 0, w: "Le Code Napoléon de 1804."},
-                {q: "Quelle distinction crée-t-il pour le mérite ?", opts: ["Légion d'Honneur", "Médaille d'Or", "Croix", "Le Ruban"], c: 0, w: "Il a créé la Légion d'Honneur."},
-                {q: "Qu'a-t-il fondé pour former l'élite ?", opts: ["Le Lycée", "L'Université", "Le Collège", "La Mairie"], c: 0, w: "Il a fondé les Lycées."}
+                {q: "Quel pays Napoléon envahit-il en 1808 ?", opts: ["L'Espagne", "La Russie", "L'Angleterre", "L'Italie"], c: 0, w: "L'invasion de l'Espagne."},
+                {q: "Quelle tactique de résistance les Espagnols inventent-ils ?", opts: ["La Guérilla", "Le Blocus", "L'Artillerie", "La Cavalerie"], c: 0, w: "La guérilla (petite guerre de harcèlement)."},
+                {q: "Comment s'appelle l'armée de Napoléon ?", opts: ["La Grande Armée", "Les Bleus", "Les Centurions", "Légion"], c: 0, w: "C'était la Grande Armée."},
+                {q: "L'Espagne a été pour Napoléon :", opts: ["Un échec épuisant", "Une victoire facile", "Un allié fidèle", "Un désert"], c: 0, w: "Ce fut une guerre d'usure épuisante."},
+                {q: "En quelle année l'invasion de l'Espagne a-t-elle commencé ?", opts: ["1808", "1815", "1799", "1804"], c: 0, w: "En 1804."}
             ]
         },
         {
-            title: "IV. La Gloire (Austerlitz)",
-            pos: {t: 60, l: 20}, // España (Suroeste)
-            info: "En 1805, <b>Austerlitz</b> (la bataille des Trois Empereurs) est sa plus grande victoire. Son grand rival est l'<b>Angleterre</b>. Après avoir perdu sur mer à <b>Trafalgar</b>, il instaure le <b>Blocus Continental</b> pour empêcher les Anglais de commercer avec l'Europe. Son armée s'appelait la <b>Grande Armée</b>.",
+            title: "IV. Imperio Francés",
+            pos: {t: 45, l: 50}, // Imperio Francés (Centro)
+            info: "En <b>1804</b>, Napoléon devient <b>Empereur</b>. Son plus grand héritage est le <b>Code Civil</b> de 1804, qui garantit l'égalité devant la loi. Il crée aussi la <b>Légion d'Honneur</b> pour récompenser les citoyens méritants.",
             questions: [
-                {q: "Quelle est sa plus grande victoire ?", opts: ["Austerlitz", "Waterloo", "Leipzig", "Madrid"], c: 0, w: "C'est la bataille d'Austerlitz en 1805."},
-                {q: "Quel pays était son rival imbattable sur mer ?", opts: ["Angleterre", "Espagne", "Russie", "Prusse"], c: 0, w: "L'Angleterre dominait les mers."},
-                {q: "Où perd-il sa flotte contre les Anglais ?", opts: ["Trafalgar", "Wagram", "Lodi", "Borodino"], c: 0, w: "La défaite de Trafalgar en 1805."},
-                {q: "Comment s'appelait son armée de légende ?", opts: ["Grande Armée", "Les Bleus", "Légion", "Les Centurions"], c: 0, w: "La Grande Armée."},
-                {q: "Quel système isolait économiquement l'Angleterre ?", opts: ["Blocus Continental", "Blocus Naval", "Embargo", "Taxes"], c: 0, w: "Le Blocus Continental."}
+                {q: "En quelle année Napoléon devient-il Empereur ?", opts: ["1804", "1799", "1815", "1812"], c: 0, w: "Le Sacre a eu lieu en 1804."},
+                {q: "Quel est l'héritage le plus célèbre de Napoléon ?", opts: ["Le Code Civil", "Ses bijoux", "Son cheval", "Ses chapeaux"], c: 0, w: "Le Code Civil de 1804."},
+                {q: "Que garantit le Code Civil ?", opts: ["L'égalité devant la loi", "Le droit de voler", "Le titre de roi", "La fin du travail"], c: 0, w: "Il garantit l'égalité juridique."},
+                {q: "Quelle distinction Napoléon a-t-il créée ?", opts: ["La Légion d'Honneur", "Le Prix Nobel", "L'Oscar", "Le César"], c: 0, w: "La Légion d'Honneur."},
+                {q: "Où a eu lieu le sacre de Napoléon ?", opts: ["Notre-Dame de Paris", "La Tour Eiffel", "Versailles", "Rome"], c: 0, w: "À Notre-Dame de Paris."}
             ]
         },
         {
-            title: "V. Le Déclin (Russie)",
-            pos: {t: 20, l: 85}, // Rusia (Lejano Este)
-            info: "En <b>1812</b>, il envahit la <b>Russie</b>. Mais les Russes utilisent la tactique de la <b>terre brûlée</b> (ils brûlent tout avant de reculer). Le plus grand ennemi de Napoléon fut le <b>froid</b> extrême de l'hiver russe. En 1813, il perd la bataille de <b>Leipzig</b> (dite Bataille des Nations).",
+            title: "V. Invasión de Rusia",
+            pos: {t: 25, l: 82}, // Invasión de Rusia (Arriba Derecha)
+            info: "En <b>1812</b>, Napoléon attaque la <b>Russie</b>. Les Russes pratiquent la politique de la <b>terre brûlée</b>. Le froid glacial de l'<b>hiver russe</b> détruit la Grande Armée pendant sa retraite.",
             questions: [
-                {q: "En quelle année envahit-il la Russie ?", opts: ["1812", "1804", "1815", "1800"], c: 0, w: "L'invasion commence en 1812."},
-                {q: "Quelle tactique russe a affamé les Français ?", opts: ["Terre brûlée", "Attaque", "Tranchée", "Guérilla"], c: 0, w: "Tout brûler en reculant."},
-                {q: "Quel fut son pire ennemi en Russie ?", opts: ["Le froid", "La mer", "La pluie", "Le vent"], c: 0, w: "Le froid de l'hiver russe."},
-                {q: "Quelle bataille perd-il en 1813 ?", opts: ["Leipzig", "Waterloo", "Jena", "Austerlitz"], c: 0, w: "La défaite de Leipzig."},
-                {q: "Quel est l'autre nom de la bataille de Leipzig ?", opts: ["Bataille des Nations", "Le Duel", "Chute", "Le Triomphe"], c: 0, w: "On l'appelle la Bataille des Nations."}
+                {q: "En quelle année Napoléon envahit-il la Russie ?", opts: ["1812", "1804", "1815", "1800"], c: 0, w: "En 1812."},
+                {q: "Quelle tactique les Russes utilisent-ils ?", opts: ["La terre brûlée", "Le blocus", "L'artillerie", "Le duel"], c: 0, w: "La terre brûlée (brûler les ressources)."},
+                {q: "Quel fut le pire ennemi des Français en Russie ?", opts: ["Le froid (hiver russe)", "La mer", "La pluie", "La faim"], c: 0, w: "L'hiver russe a été fatal."},
+                {q: "Comment s'appelle le mouvement de départ de Russie ?", opts: ["La Retraite", "La Victoire", "Le Galop", "Le Voyage"], c: 0, w: "C'était la terrible Retraite de Russie."},
+                {q: "Quel pourcentage de l'armée est revenu vivant ?", opts: ["Très peu", "La moitié", "Tous", "90%"], c: 0, w: "Seule une petite fraction a survécu."}
             ]
         },
         {
-            title: "VI. La Chute (Waterloo)",
-            pos: {t: 25, l: 45}, // Waterloo (Bélgica - Norte de París)
-            info: "Exilé d'abord sur l'île d'<b>Elbe</b>, il revient pour la période des <b>Cent-Jours</b>. Sa défaite finale a lieu à <b>Waterloo</b> le 18 juin <b>1815</b>. Il meurt exilé sur l'île de <b>Sainte-Hélène</b> le 5 mai <b>1821</b>. Sergio, n'oublie pas ces dates finales !",
+            title: "VI. Derrota y Exilio",
+            pos: {t: 50, l: 82}, // Derrota y Exilio (Medio Derecha)
+            info: "Le 18 juin <b>1815</b>, Napoléon perd sa dernière bataille à <b>Waterloo</b>. Il est exilé sur l'île de <b>Sainte-Hélène</b>, dans l'Atlantique, où il meurt le 5 mai <b>1821</b>.",
             questions: [
-                {q: "Où est-il exilé pour la première fois en 1814 ?", opts: ["L'île d'Elbe", "Sainte-Hélène", "Corse", "Malte"], c: 0, w: "Il est envoyé sur l'île d'Elbe."},
-                {q: "Sa défaite finale a lieu en 1815 à :", opts: ["Waterloo", "Leipzig", "Jena", "Moscou"], c: 0, w: "La bataille finale est Waterloo."},
-                {q: "Comment appelle-t-on son retour en 1815 ?", opts: ["Les Cent-Jours", "Restauration", "Consulat", "Empire"], c: 0, w: "La période des Cent-Jours."},
-                {q: "Lieu de son exil final et de sa mort ?", opts: ["Sainte-Hélène", "Elbe", "Sicile", "Madère"], c: 0, w: "Il finit ses jours à Sainte-Hélène."},
-                {q: "En quelle année Napoléon meurt-il ?", opts: ["1821", "1815", "1804", "1830"], c: 0, w: "Le 5 mai 1821."}
+                {q: "Où a eu lieu la dernière bataille de Napoléon ?", opts: ["Waterloo", "Austerlitz", "Leipzig", "Paris"], c: 0, w: "La bataille de Waterloo."},
+                {q: "En quelle année a eu lieu la bataille de Waterloo ?", opts: ["1815", "1821", "1804", "1799"], c: 0, w: "Le 18 juin 1815."},
+                {q: "Sur quelle île Napoléon finit-il sa vie ?", opts: ["Sainte-Hélène", "Elbe", "Corse", "Malte"], c: 0, w: "Sur l'île de Sainte-Hélène."},
+                {q: "En quelle année Napoléon meurt-il ?", opts: ["1821", "1815", "1804", "1830"], c: 0, w: "Le 5 mai 1821."},
+                {q: "Quel sentiment Napoléon a-t-il laissé à l'histoire ?", opts: ["Une légende", "L'oubli", "Le calme", "La peur"], c: 0, w: "Il est devenu une figure légendaire."}
             ]
         }
     ];
@@ -219,6 +219,7 @@
 
     function initGame() {
         const panel = document.getElementById('map-panel');
+        panel.innerHTML = ''; // Limpiar nodos previos
         themes.forEach((t, i) => {
             const node = document.createElement('div');
             node.className = 'map-node';
@@ -235,9 +236,11 @@
     function updateVisuals() {
         themes.forEach((_, i) => {
             const node = document.getElementById(`node-${i}`);
-            node.classList.remove('active', 'completed');
-            if (i < currentLvl) node.classList.add('completed');
-            else if (i === currentLvl) node.classList.add('active');
+            if (node) {
+                node.classList.remove('active', 'completed');
+                if (i < currentLvl) node.classList.add('completed');
+                else if (i === currentLvl) node.classList.add('active');
+            }
         });
     }
 
@@ -267,7 +270,6 @@
         const grid = document.getElementById('options-grid');
         grid.innerHTML = '';
         
-        // Mapear opciones con ID original para detectar correcta
         const opts = qData.opts.map((text, index) => ({text, originalIndex: index}));
         opts.sort(() => Math.random() - 0.5);
 
@@ -290,12 +292,9 @@
         const correctBtn = document.getElementById(`opt-${correctIndex}`);
 
         if (selectedIndex === correctIndex) {
-            // VERDE para el correcto
             selectedBtn.classList.add('choice-correct');
         } else {
-            // ROJO para el incorrecto
             selectedBtn.classList.add('choice-incorrect');
-            // Resaltar el correcto (Verde parpadeante)
             correctBtn.classList.add('choice-correct', 'highlight-correct');
             
             hp--;
